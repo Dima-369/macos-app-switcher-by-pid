@@ -2,20 +2,22 @@
 
 ## Motivation
 
-I was using `hs.window.find("Kotlin Emacs"):focus()` with Hammerspoon, but it has a severe performance impact, should any application hang up since it queries all windows and on stuck applications, this can take seconds. If no windows are stuck, this is still rather fast. See benchmarks below on MacBook Pro M1 2020.
+I was using `hs.window.find("Kotlin Emacs"):focus()` with Hammerspoon, but it has a severe performance impact, should any application hang up since Hammerspoon queries all windows and on stuck applications, this can take seconds. If no windows are stuck, it is fast, but this Rust code is usually faster.
 
 ## Benchmarks
+
+On MacBook Pro M1 2020.
 
 ### This repo
 
 ```bash
-$ hyperfine 'time target/release/macos-app-switcher-by-pid 37529'
+$ hyperfine 'target/release/macos-app-switcher-by-pid 37529'
 
-Benchmark 1: time target/release/macos-app-switcher-by-pid 37529
-  Time (mean ± σ):      39.6 ms ±   5.9 ms    [User: 4.1 ms, System: 3.5 ms]
-  Range (min … max):    36.5 ms …  68.7 ms    41 runs
+Benchmark 1: target/release/macos-app-switcher-by-pid 37529
+  Time (mean ± σ):      39.7 ms ±  10.6 ms    [User: 4.0 ms, System: 3.1 ms]
+  Range (min … max):    35.6 ms …  96.0 ms    40 runs
  
-  Warning: The first benchmarking run for this command was significantly slower than the rest (68.7 ms). This could be caused by (filesystem) caches that were not filled until after the first run. You should consider using the '--warmup' option to fill those caches before the actual benchmark. Alternatively, use the '--prepare' option to clear the caches before each timing run.
+  Warning: The first benchmarking run for this command was significantly slower than the rest (71.2 ms). This could be caused by (filesystem) caches that were not filled until after the first run. You should consider using the '--warmup' option to fill those caches before the actual benchmark. Alternatively, use the '--prepare' option to clear the caches before each timing run.
 ```
 
 ### Hammerspoon in CLI via `hs`
