@@ -1,5 +1,49 @@
 # macos-activate-app
 
+## Motivation
+
+I was using `hs.window.find("Kotlin Emacs"):focus()` with Hammerspoon, but it has a severe performance impact, should any application hang up since it queries all windows and on stuck applications, this can take seconds. If no windows are stuck, this is still rather fast. See benchmarks below on MacBook Pro M1 2020.
+
+## Benchmarks
+
+### This repo
+
+```bash
+$ hyperfine 'time target/release/macos-app-switcher-by-pid 37529'
+
+Benchmark 1: time target/release/macos-app-switcher-by-pid 37529
+  Time (mean ± σ):      39.6 ms ±   5.9 ms    [User: 4.1 ms, System: 3.5 ms]
+  Range (min … max):    36.5 ms …  68.7 ms    41 runs
+ 
+  Warning: The first benchmarking run for this command was significantly slower than the rest (68.7 ms). This could be caused by (filesystem) caches that were not filled until after the first run. You should consider using the '--warmup' option to fill those caches before the actual benchmark. Alternatively, use the '--prepare' option to clear the caches before each timing run.
+```
+
+### Hammerspoon in CLI via `hs`
+
+```bash
+$ hyperfine "hs -c 'hs.window.find(\"Kotlin Emacs\"):focus()'"
+
+Benchmark 1: hs -c 'hs.window.find("Kotlin Emacs"):focus()'
+  Time (mean ± σ):      89.6 ms ±  13.0 ms    [User: 8.6 ms, System: 8.6 ms]
+  Range (min … max):    74.4 ms … 122.6 ms    23 runs
+```
+
+### Interpreted Osascript
+
+```bash
+$ hyperfine 'osascript -e "tell application \"System Events\"
+                                                 set proc to first process whose unix id is 37529
+                                                 set frontmost of proc to true
+                                                 end tell"'
+                                                 
+Benchmark 1: osascript -e "tell application \"System Events\"
+       set proc to first process whose unix id is 37529
+       set frontmost of proc to true
+   end tell"
+  Time (mean ± σ):     188.7 ms ±  24.2 ms    [User: 23.4 ms, System: 19.3 ms]
+  Range (min … max):   150.9 ms … 223.1 ms    13 runs
+```
+
 ## Overview
 **macos-activate-app** is a command-line tool written in Rust that allows macOS users to activate a specific application based on its Process Identifier (**PID**). It employs Cocoa bindings and the Objective-C runtime to interact with macOS system APIs.
 

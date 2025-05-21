@@ -1,5 +1,5 @@
 [package]
-name = "macos-activate-app"
+name = "macos-app-switcher-by-pid"
 version = "0.1.0"
 edition = "2021"
 
