@@ -1,8 +1,8 @@
 [package]
 name = "macos-app-switcher-by-pid"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
-cocoa = "0.24"
+cocoa = "0.26"
 objc = "0.2"
