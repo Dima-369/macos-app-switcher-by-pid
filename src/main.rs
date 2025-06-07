@@ -1,4 +1,3 @@
-use cocoa::appkit::NSRunningApplication;
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSAutoreleasePool;
 use objc::{class, msg_send, sel, sel_impl};
