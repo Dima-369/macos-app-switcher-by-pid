@@ -8,6 +8,10 @@ Install which provides the `macos-app-switcher-by-pid` binary:
 cargo install --path .
 ```
 
+Note that compiling shows lots of deprecation warnings, but it works fine on macOS 15.6.1.
+
+---
+
 Then run like this:
 
 ```bash
